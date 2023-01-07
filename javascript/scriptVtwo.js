@@ -1,38 +1,39 @@
 // pointing the html button
-let btnProject = document.querySelector('.btnProject');
+let btnAddProject = document.querySelector('.btnAddProject');
 // creating the event listener
-btnProject.addEventListener('click',runInput);
+btnAddProject.addEventListener('click',initProject);
 // pointing the left div 
 const leftDiv = document.querySelector('.left-side');
 // pointing the right div
 const mainDiv = document.querySelector('.main-content');
 
 // this function create the project input
-function runInput(){
+function initProject(){
     // create input element and link it to the left div
     const projectInput = document.createElement('input');
     projectInput.setAttribute('type','text');
     projectInput.setAttribute('class','project-input');
     leftDiv.appendChild(projectInput);
     // remove the initial button in html file
-    btnProject.remove();
-    // create the add button and link it to the left div
-    const addBtn = document.createElement('button');
-    addBtn.innerText = 'Add';
-    addBtn.setAttribute('class','add-btn');
-    leftDiv.appendChild(addBtn);
+    btnAddProject.remove();
+    // create the confirm button and link it to the left div
+    const btnConfProject = document.createElement('button');
+    btnConfProject.innerText = 'Confirm';
+    btnConfProject.setAttribute('class','confProjectBtn');
+    leftDiv.appendChild(btnConfProject);
     // create the cancel button and link it to the left div
-    const cancelBtn = document.createElement('button');
-    cancelBtn.innerText = 'Cancel';
-    cancelBtn.setAttribute('class','cancel-btn');
-    leftDiv.appendChild(cancelBtn);
+    const btnCancelProject = document.createElement('button');
+    btnCancelProject.innerText = 'Cancel';
+    btnCancelProject.setAttribute('class','cancelProjectBtn');
+    leftDiv.appendChild(btnCancelProject);
     // create event listeners
-    addBtn.addEventListener('click',saveProject);
-    cancelBtn.addEventListener('click',deleteProject);
+    btnConfProject.addEventListener('click',confirmProject);
+    btnCancelProject.addEventListener('click',cancelProject);
 }
 
+
 // the add button event listener function
-function saveProject(e){
+function confirmProject(e){
     // this condition enable us to stop adding the same project 
     // to the DOM multiple times
     if(!document.querySelector('.project-title')){
@@ -48,41 +49,46 @@ function saveProject(e){
         // link the h2 to the right side div
         mainDiv.appendChild(projectTitle);
         // create the add button again bt now for the task
-        let btnTask = document.createElement('button')
-        btnTask.setAttribute('class','btnTask');
-        btnTask.innerText = "Add Task";
+        let btnAddTask = document.createElement('button')
+        btnAddTask.setAttribute('class','btnAddTask');
+        btnAddTask.innerText = "Add Task";
         // link the add button for tasks to the right side div
-        mainDiv.appendChild(btnTask);
+        mainDiv.appendChild(btnAddTask);
         // add an event listener to the add button for tasks
-        btnTask.addEventListener('click',runTask);
+        btnAddTask.addEventListener('click',initTask);
     }
 }
+
 // this is the event listener function enabled once we click
 // on the cancel button in the project side.
-function deleteProject(){
+function cancelProject(){
     // deleting the project input
     document.querySelector('.project-input').remove();
-    // deleting the add button
-    document.querySelector('.add-btn').remove();
+    // deleting the conf button
+    document.querySelector('.confProjectBtn').remove();
     // deleting the cancel button
-    document.querySelector('.cancel-btn').remove();
+    document.querySelector('.cancelProjectBtn').remove();
     // if the h2 project was already created we can already
     // remove it
     if(document.querySelector('.project-title')){
         document.querySelector('.project-title').remove();
     }
+    if(document.querySelector('.btnAddTask')){
+        document.querySelector('.btnAddTask').remove();
+    }
     // return the DOM to the initial condition
     // creating the add project again with the event listener
-    btnProject = document.createElement('button')
-    btnProject.setAttribute('class','btnProject');
-    btnProject.innerText = "Add Project";
+    btnAddProject = document.createElement('button')
+    btnAddProject.setAttribute('class','btnAddProject');
+    btnAddProject.innerText = "Add Project";
     // linking the button to the left div again
-    leftDiv.appendChild(btnProject);
+    leftDiv.appendChild(btnAddProject);
     // adding the event listener to the add project button
-    btnProject.addEventListener('click',runInput);
+    btnAddProject.addEventListener('click',initProject);
 }
+
 // this is the run task function enabled after clicking on add task
-function runTask(){
+function initTask(){
     // creating the input field
     const taskInput = document.createElement('input');        
     taskInput.setAttribute('type','text');
@@ -90,42 +96,42 @@ function runTask(){
     // link the input field to the right side div
     mainDiv.appendChild(taskInput);
     // remove the add task button
-    document.querySelector('.btnTask').remove();
+    document.querySelector('.btnAddTask').remove();
     // create an confirm task button
-    const addBtn = document.createElement('button');
-    addBtn.innerText = 'Add';
-    addBtn.setAttribute('class','addTask-btn');
+    const btnConfTask = document.createElement('button');
+    btnConfTask.innerText = 'Confirm';
+    btnConfTask.setAttribute('class','confTaskBtn');
     // link to the input  field to the right side
-    mainDiv.appendChild(addBtn);
+    mainDiv.appendChild(btnConfTask);
     // create a cancel btn
-    const cancelBtn = document.createElement('button');
-    cancelBtn.innerText = 'Cancel';
-    cancelBtn.setAttribute('class','cancelTask-btn');
-    mainDiv.appendChild(cancelBtn);
+    const btnCancelTask = document.createElement('button');
+    btnCancelTask.innerText = 'Cancel';
+    btnCancelTask.setAttribute('class','cancelTaskBtn');
+    mainDiv.appendChild(btnCancelTask);
     // event listeners for both confirm and cancel task buttons
-    addBtn.addEventListener('click',saveTask);
-    cancelBtn.addEventListener('click',deleteTask);
+    btnConfTask.addEventListener('click',confirmTask);
+    btnCancelTask.addEventListener('click',cancelTask);
 }
 //
-function deleteTask(){
+function cancelTask(){
     // remove task input
     document.querySelector('.task-input').remove();
     // remove confirm task btn
-    document.querySelector('.addTask-btn').remove();
+    document.querySelector('.confTaskBtn').remove();
     // remove cancel task btn
-    document.querySelector('.cancelTask-btn').remove();
+    document.querySelector('.cancelTaskBtn').remove();
     // remove if h2 was already assigned
     if(document.querySelector('.task-title')){
         document.querySelector('.task-title').remove();
     }
-    btnTask = document.createElement('button')
-    btnTask.setAttribute('class','btnTask');
-    btnTask.innerText = "Add Task";
-    mainDiv.appendChild(btnTask);
-    btnTask.addEventListener('click',runTask);
+    btnAddTask = document.createElement('button')
+    btnAddTask.setAttribute('class','btnAddTask');
+    btnAddTask.innerText = "Add Task";
+    mainDiv.appendChild(btnAddTask);
+    btnAddTask.addEventListener('click',initTask);
 }
 
-function saveTask(e){
+function confirmTask(e){
     if(!document.querySelector('.task-title')){
         console.log(document.querySelector('.task-input').value)
         //console.log(e.composedPath()[1].firstChild.innerHTML)
@@ -135,10 +141,10 @@ function saveTask(e){
         taskTitle.innerText = document.querySelector('.task-input').value;
         //console.log(projectInput.value)
         mainDiv.appendChild(taskTitle);
-        let btnTask = document.createElement('button')
-        btnTask.setAttribute('class','btnProject');
-        btnTask.innerText = "Add Task";
-        mainDiv.appendChild(btnTask);
-        btnTask.addEventListener('click',runTask);
+        let btnAddTask = document.createElement('button')
+        btnAddTask.setAttribute('class','btnProject');
+        btnAddTask.innerText = "Add Task";
+        mainDiv.appendChild(btnAddTask);
+        btnAddTask.addEventListener('click',initTask);
     }
 }
