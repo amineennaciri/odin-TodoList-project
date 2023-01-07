@@ -57,6 +57,10 @@ let todoList = {
     btnConfTask : undefined,
     btnCancelTask : undefined,
     taskTitle: undefined,
+    projectDisplay: undefined,
+    projectDelete: undefined,
+    taskDelete : undefined,
+    taskDisplay : undefined,
     // methods
     // this function create the project input
     initProject : function(){
@@ -83,20 +87,33 @@ let todoList = {
             todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
             // create event listeners for add task button
             new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
+            // create the button that will display the name of the project
+            todoList.projectDisplay = new CreateElmt(todoList.projectDisplay,'button','project-display',todoList.leftDiv,document.querySelector('.project-input').value).createElmt();
+            // create the delete button that will delete the current project if pressed
+            todoList.projectDelete = new CreateElmt(todoList.projectDelete,'button','project-delete',todoList.leftDiv,'delete').createElmt();
+            // deleting the project input, conf button, cancel button
+            new DeleteElmt('.project-input','.confProjectBtn','.cancelProjectBtn')
+            // create event listeners for delete project button
+            new AddEvent(todoList.projectDelete,todoList.deleteProject).addEvent();
         }
     },
     cancelProject : function(){
         // deleting the project input, conf button, cancel button
-        // if the h2 project was already created we can already remove it
-        // if the btn Add Task was already created we can already remove it
-        new DeleteElmt('.project-input','.confProjectBtn','.cancelProjectBtn','.project-title','.btnAddTask')
+        new DeleteElmt('.project-input','.confProjectBtn','.cancelProjectBtn')
+        // return the DOM to the initial condition
+        // creating the add project again with the event listener
+        todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
+        new AddEvent(todoList.btnAddProject,todoList.initProject).addEvent();
+    },
+    deleteProject : function(){
+        // deleting h2 project, the btn Add Task, delete button and projectDsplay
+        new DeleteElmt('.project-title','.btnAddTask','.project-delete','.project-display')
         // return the DOM to the initial condition
         // creating the add project again with the event listener
         todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
         new AddEvent(todoList.btnAddProject,todoList.initProject).addEvent();
     },
     initTask : function(){
-        console.log('Its morphin time')
         // creating the input field
         new CreateElmt(todoList.taskInput,'input','task-input',todoList.mainDiv,'').createElmt()
         // remove the add task button
@@ -112,22 +129,38 @@ let todoList = {
     confirmTask : function(){
         // this condition enable us to stop adding the same task 
         // to the DOM multiple times
-        if(!document.querySelector('.task-title')){
-        // create a task title
-        new CreateElmt(todoList.taskTitle,'h2','task-title',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
-        // create an Add task for the following task
-        todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
-        // create event listeners for add task button
-        new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
-        }
+        //if(!document.querySelector('.task-title')){
+            // create a task title
+            todoList.taskTitle = new CreateElmt(todoList.taskTitle,'h2','task-title',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
+            // create the button that will display the name of the task
+            todoList.taskDisplay = new CreateElmt(todoList.taskDisplay,'button','task-display',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
+            // create the delete button that will delete the current task if pressed
+            todoList.taskDelete = new CreateElmt(todoList.taskDelete,'button','task-delete',todoList.mainDiv,'delete').createElmt();
+            // deleting the ptask input, conf button, cancel button
+            new DeleteElmt('.task-input','.confTaskBtn','.cancelTaskBtn')
+            // create event listeners for delete project button
+            new AddEvent(todoList.taskDelete,todoList.deleteTask).addEvent();
+            // create an Add task for the following task
+            todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
+            // create event listeners for add task button
+            new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
+        //}
     },
     cancelTask : function(){
         // remove task input, confirm task btn, cancel task btn, h2 task
-        new DeleteElmt('.task-input','.confTaskBtn','.cancelTaskBtn','.task-title');
+        new DeleteElmt('.task-input','.confTaskBtn','.cancelTaskBtn');
         // return the DOM to the initial condition
         // creating the add task again with the event listener
         todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt()
         new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
+    },
+    deleteTask : function(){
+        // deleting h2 project, delete button and taskDsplay
+        new DeleteElmt('.task-title','.task-delete','.task-display')
+        // return the DOM to the initial condition
+        // creating the add project again with the event listener
+     /*    todoList.btnAddTask = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
+        new AddEvent(todoList.btnAddProject,todoList.initProject).addEvent(); */
     },
 }
 // properties that call the constructor to create event listeners
