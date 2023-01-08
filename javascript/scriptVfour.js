@@ -56,11 +56,12 @@ let todoList = {
     taskInput : undefined,
     btnConfTask : undefined,
     btnCancelTask : undefined,
-    taskTitle: undefined,
+    taskComplete: undefined,
     projectDisplay: undefined,
     projectDelete: undefined,
     taskDelete : undefined,
     taskDisplay : undefined,
+    taskDate : undefined,
     taskCount: 0,
     btntoDeleteId: undefined,
     // methods
@@ -132,21 +133,29 @@ let todoList = {
         // this condition enable us to stop adding the same task 
         // to the DOM multiple times
         //if(!document.querySelector('.task-title')){
-            // create a task title
-            //todoList.taskTitle = new CreateElmt(todoList.taskTitle,'h2','task-title',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
-            // add an Id attribute to the task title
-            //todoList.taskTitle.setAttribute('id',todoList.taskCount);
+            // create a task complete button
+            todoList.taskComplete = new CreateElmt(todoList.taskComplete,'button','task-complete',todoList.mainDiv,'O').createElmt();
+            // add an Id attribute to the task complete button
+            todoList.taskComplete.setAttribute('id',todoList.taskCount);
             // create the button that will display the name of the task
             todoList.taskDisplay = new CreateElmt(todoList.taskDisplay,'button','task-display',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
             // add an Id attribute to the display task button
             todoList.taskDisplay.setAttribute('id',todoList.taskCount);
+
+            // create the delete button that will delete the current task if pressed
+            todoList.taskDate = new CreateElmt(todoList.taskDate,'button','task-date',todoList.mainDiv,'date').createElmt();
+            // add an Id attribute to the delete task button
+            todoList.taskDate.setAttribute('id',todoList.taskCount);
+
             // create the delete button that will delete the current task if pressed
             todoList.taskDelete = new CreateElmt(todoList.taskDelete,'button','task-delete',todoList.mainDiv,'delete').createElmt();
             // add an Id attribute to the delete task button
             todoList.taskDelete.setAttribute('id',todoList.taskCount);
             // deleting the ptask input, conf button, cancel button
             new DeleteElmt('.task-input','.confTaskBtn','.cancelTaskBtn')
-            // create event listeners for delete project button
+            // create event listeners for complete task button
+            new AddEvent(todoList.taskComplete,todoList.deleteTask).addEvent();
+            // create event listeners for delete task button
             new AddEvent(todoList.taskDelete,todoList.deleteTask).addEvent();
             // create an Add task for the following task
             todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
