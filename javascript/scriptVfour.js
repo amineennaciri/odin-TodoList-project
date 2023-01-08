@@ -133,9 +133,9 @@ let todoList = {
         // to the DOM multiple times
         //if(!document.querySelector('.task-title')){
             // create a task title
-            todoList.taskTitle = new CreateElmt(todoList.taskTitle,'h2','task-title',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
+            //todoList.taskTitle = new CreateElmt(todoList.taskTitle,'h2','task-title',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
             // add an Id attribute to the task title
-            todoList.taskTitle.setAttribute('id',todoList.taskCount);
+            //todoList.taskTitle.setAttribute('id',todoList.taskCount);
             // create the button that will display the name of the task
             todoList.taskDisplay = new CreateElmt(todoList.taskDisplay,'button','task-display',todoList.mainDiv,document.querySelector('.task-input').value).createElmt();
             // add an Id attribute to the display task button
@@ -171,14 +171,6 @@ let todoList = {
         while(document.getElementById(btntoDeleteId)){
             document.getElementById(btntoDeleteId).remove();
         }
-        //document.getElementById(e.srcElement.id).remove();
-        //document.getElementById(e.srcElement.id).remove();
-        // deleting h2 project, delete button and taskDsplay
-        //new DeleteElmt('.task-title')//,'.task-delete','.task-display')
-        // return the DOM to the initial condition
-        // creating the add project again with the event listener
-     /*    todoList.btnAddTask = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
-        new AddEvent(todoList.btnAddProject,todoList.initProject).addEvent(); */
     },
 }
 // properties that call the constructor to create event listeners
