@@ -1,3 +1,7 @@
+import _ from 'date-fns';
+const newDate = new Date();
+console.log(newDate)
+
 // constructor that make event listeners
 function AddEvent(btnTargeted,eventFunction){
     this.btnTargeted = btnTargeted

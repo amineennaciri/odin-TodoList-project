@@ -1,0 +1,27 @@
+{
+  "name": "odin-todolist-project",
+  "version": "1.0.0",
+  "description": "This is the Todo List from TOP(the odin project) Full Stack JavaScript course.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amineennaciri/odin-TodoList-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amineennaciri/odin-TodoList-project/issues"
+  },
+  "homepage": "https://github.com/amineennaciri/odin-TodoList-project#readme",
+  "dependencies": {
+    "date-fns": "^2.29.3"
+  },
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
