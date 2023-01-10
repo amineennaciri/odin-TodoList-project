@@ -1,7 +1,10 @@
 import _ from 'date-fns';
-const newDate = new Date();
+import { format, compareAsc } from 'date-fns';
+/* const newDate = new Date();
 console.log(newDate)
-
+let varA = '2023-05-25'
+let dateVar = format(new Date(varA), 'MM/dd/yyyy')
+console.log(dateVar) */
 // constructor that make event listeners
 function AddEvent(btnTargeted,eventFunction){
     this.btnTargeted = btnTargeted
@@ -68,6 +71,9 @@ let todoList = {
     taskDate : undefined,
     taskCount: 0,
     btntoDeleteId: undefined,
+    taskYear : undefined,
+    taskMonth : undefined,
+    taskDay : undefined,
     // methods
     // this function create the project input
     initProject : function(){
@@ -165,6 +171,8 @@ let todoList = {
             todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
             // create event listeners for add task button
             new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
+            // create event listeners for add task date button
+            new AddEvent(todoList.taskDate,todoList.addDate).addEvent();
             // increment the taskCount
             todoList.taskCount++;
         //}
@@ -183,6 +191,17 @@ let todoList = {
         btntoDeleteId = e.srcElement.id;
         while(document.getElementById(btntoDeleteId)){
             document.getElementById(btntoDeleteId).remove();
+        }
+    },
+    addDate : function(e){
+        alert(`You will now enter the your task's due date`);
+        todoList.taskYear  = prompt('enter the year!');
+        todoList.taskMonth = prompt('enter the month!');
+        todoList.taskDay   = prompt('enter the day!');
+        if(todoList.taskYear != null && todoList.taskYear != ''
+        && todoList.taskMonth != null && todoList.taskMonth != ''
+        && todoList.taskDay != null && todoList.taskDay != '' ){
+            document.querySelector('.task-date').innerText = format(new Date(todoList.taskYear+'-'+todoList.taskMonth+'-'+todoList.taskDay), 'MM/dd/yyyy');
         }
     },
 }
