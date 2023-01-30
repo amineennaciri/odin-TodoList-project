@@ -1,5 +1,9 @@
-import _ from 'date-fns';
+/* import _ from 'date-fns'; */
 import { format, compareAsc } from 'date-fns';
+/* let date_fns = require('date-fns'); */
+console.log(format(new Date(2014, 1, 11), 'yyyy-MM-dd'));
+console.log(format(new Date(2014, 1, 11),  'PPPP'));
+/* console.log(format('2023-01-24',  'PPPP')); */
 /* const newDate = new Date();
 console.log(newDate)
 let varA = '2023-05-25'
@@ -152,10 +156,11 @@ let todoList = {
             // add an Id attribute to the display task button
             todoList.taskDisplay.setAttribute('id',todoList.taskCount);
 
-            // create the delete button that will delete the current task if pressed
-            todoList.taskDate = new CreateElmt(todoList.taskDate,'button','task-date',todoList.mainDiv,'date').createElmt();
+            // create the date button that will add a date if clicked
+            todoList.taskDate = new CreateElmt(todoList.taskDate,'input','task-date',todoList.mainDiv,'').createElmt();
             // add an Id attribute to the delete task button
             todoList.taskDate.setAttribute('id',todoList.taskCount);
+            todoList.taskDate.setAttribute('type','date');
 
             // create the delete button that will delete the current task if pressed
             todoList.taskDelete = new CreateElmt(todoList.taskDelete,'button','task-delete',todoList.mainDiv,'delete').createElmt();
@@ -172,7 +177,8 @@ let todoList = {
             // create event listeners for add task button
             new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
             // create event listeners for add task date button
-            new AddEvent(todoList.taskDate,todoList.addDate).addEvent();
+            todoList.taskDate.addEventListener('input',todoList.addDate);
+            //new AddEvent(todoList.taskDate,todoList.addDate).addEvent();
             // increment the taskCount
             todoList.taskCount++;
         //}
@@ -194,7 +200,17 @@ let todoList = {
         }
     },
     addDate : function(e){
-        alert(`You will now enter the your task's due date`);
+        console.log(Array.from(e.target.parentNode.children).indexOf(e.target));
+        todoList.taskDay = Array.from(e.target.parentNode.children).indexOf(e.target);
+        console.log(e.srcElement.value.split('-'));
+        console.log(format(new Date(e.srcElement.value.split('-')[0], e.srcElement.value.split('-')[1], e.srcElement.value.split('-')[2]),  'PPPP'));
+        todoList.taskYear = format(new Date(e.srcElement.value.split('-')[0], e.srcElement.value.split('-')[1], e.srcElement.value.split('-')[2]),  'PPPP');
+        //new DeleteElmt('#todoList.taskCount');
+        new DeleteElmt('.task-date');
+        todoList.taskMonth = document.createElement('p');
+        todoList.taskMonth.innerText = todoList.taskYear;
+        todoList.mainDiv.insertBefore(todoList.taskMonth, todoList.mainDiv.children[todoList.taskDay]);
+    /*   alert(`You will now enter the your task's due date`);
         todoList.taskYear  = prompt('enter the year!');
         todoList.taskMonth = prompt('enter the month!');
         todoList.taskDay   = prompt('enter the day!');
@@ -202,7 +218,7 @@ let todoList = {
         && todoList.taskMonth != null && todoList.taskMonth != ''
         && todoList.taskDay != null && todoList.taskDay != '' ){
             document.querySelector('.task-date').innerText = format(new Date(todoList.taskYear+'-'+todoList.taskMonth+'-'+todoList.taskDay), 'MM/dd/yyyy');
-        }
+        }*/
     },
 }
 // properties that call the constructor to create event listeners
