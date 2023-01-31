@@ -10,11 +10,12 @@ let varA = '2023-05-25'
 let dateVar = format(new Date(varA), 'MM/dd/yyyy')
 console.log(dateVar) */
 // constructor that make event listeners
-function AddEvent(btnTargeted,eventFunction){
+function AddEvent(btnTargeted,eventFunction,eventType){
     this.btnTargeted = btnTargeted
     this.eventFunction = eventFunction
+    this.eventType = eventType
     this.addEvent = function(){
-        btnTargeted.addEventListener('click',eventFunction);
+        btnTargeted.addEventListener(eventType,eventFunction);
     }
 }
 // constructor that create elements using DOM
@@ -75,9 +76,13 @@ let todoList = {
     taskDate : undefined,
     taskCount: 0,
     btntoDeleteId: undefined,
-    taskYear : undefined,
-    taskMonth : undefined,
-    taskDay : undefined,
+    //
+    taskDateNewEl : undefined,
+    inputDateIndex : undefined,
+    inputDateValue: undefined,
+    inputDateArray: undefined,
+    inputDatetoDeleteId : undefined,
+    //
     // methods
     // this function create the project input
     initProject : function(){
@@ -90,8 +95,8 @@ let todoList = {
         // create the cancel button and link it to the left div
         todoList.btnCancelProject = new CreateElmt(todoList.btnCancelProject,'button','cancelProjectBtn',todoList.leftDiv,'Cancel').createElmt()
         // create event listeners for confirm and cancel buttons
-        new AddEvent(todoList.btnConfProject,todoList.confirmProject).addEvent();
-        new AddEvent(todoList.btnCancelProject,todoList.cancelProject).addEvent();
+        new AddEvent(todoList.btnConfProject,todoList.confirmProject,'click').addEvent();
+        new AddEvent(todoList.btnCancelProject,todoList.cancelProject,'click').addEvent();
     },
     // the add button event listener function
     confirmProject : function(){
@@ -103,7 +108,7 @@ let todoList = {
             // create the add button for the task
             todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
             // create event listeners for add task button
-            new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
+            new AddEvent(todoList.btnAddTask,todoList.initTask,'click').addEvent();
             // create the button that will display the name of the project
             todoList.projectDisplay = new CreateElmt(todoList.projectDisplay,'button','project-display',todoList.leftDiv,document.querySelector('.project-input').value).createElmt();
             // create the delete button that will delete the current project if pressed
@@ -120,7 +125,7 @@ let todoList = {
         // return the DOM to the initial condition
         // creating the add project again with the event listener
         todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
-        new AddEvent(todoList.btnAddProject,todoList.initProject).addEvent();
+        new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
     },
     deleteProject : function(){
         // deleting h2 project, the btn Add Task, delete button and projectDsplay
@@ -128,11 +133,11 @@ let todoList = {
         // return the DOM to the initial condition
         // creating the add project again with the event listener
         todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
-        new AddEvent(todoList.btnAddProject,todoList.initProject).addEvent();
+        new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
     },
     initTask : function(){
         // creating the input field
-        new CreateElmt(todoList.taskInput,'input','task-input',todoList.mainDiv,'').createElmt()
+        new CreateElmt(todoList.taskInput,'input','task-input',todoList.mainDiv,'').createElmt();
         // remove the add task button
         new DeleteElmt('.btnAddTask');
         // create an confirm task button
@@ -140,8 +145,8 @@ let todoList = {
         // create a cancel btn
         todoList.btnCancelTask = new CreateElmt(todoList.btnCancelTask,'button','cancelTaskBtn',todoList.mainDiv,'Cancel').createElmt();
         // event listeners for both confirm and cancel task buttons
-        new AddEvent(todoList.btnConfTask,todoList.confirmTask).addEvent();
-        new AddEvent(todoList.btnCancelTask,todoList.cancelTask).addEvent();
+        new AddEvent(todoList.btnConfTask,todoList.confirmTask,'click').addEvent();
+        new AddEvent(todoList.btnCancelTask,todoList.cancelTask,'click').addEvent();
     },
     confirmTask : function(){
         // this condition enable us to stop adding the same task 
@@ -156,8 +161,8 @@ let todoList = {
             // add an Id attribute to the display task button
             todoList.taskDisplay.setAttribute('id',todoList.taskCount);
 
-            // create the date button that will add a date if clicked
-            todoList.taskDate = new CreateElmt(todoList.taskDate,'input','task-date',todoList.mainDiv,'').createElmt();
+            // create the date button that will add a date if clicked, the taskDate has a class with a unique number because taskCount get incremented after each task is created. this is done in order to make each taskDate unique
+            todoList.taskDate = new CreateElmt(todoList.taskDate,'input',`task-date${todoList.taskCount}`,todoList.mainDiv,'').createElmt();
             // add an Id attribute to the delete task button
             todoList.taskDate.setAttribute('id',todoList.taskCount);
             todoList.taskDate.setAttribute('type','date');
@@ -169,15 +174,15 @@ let todoList = {
             // deleting the ptask input, conf button, cancel button
             new DeleteElmt('.task-input','.confTaskBtn','.cancelTaskBtn')
             // create event listeners for complete task button
-            new AddEvent(todoList.taskComplete,todoList.deleteTask).addEvent();
+            new AddEvent(todoList.taskComplete,todoList.deleteTask,'click').addEvent();
             // create event listeners for delete task button
-            new AddEvent(todoList.taskDelete,todoList.deleteTask).addEvent();
+            new AddEvent(todoList.taskDelete,todoList.deleteTask,'click').addEvent();
             // create an Add task for the following task
             todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
             // create event listeners for add task button
-            new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
+            new AddEvent(todoList.btnAddTask,todoList.initTask,'click').addEvent();
             // create event listeners for add task date button
-            todoList.taskDate.addEventListener('input',todoList.addDate);
+            new AddEvent(todoList.taskDate,todoList.addDate,'input').addEvent();
             //new AddEvent(todoList.taskDate,todoList.addDate).addEvent();
             // increment the taskCount
             todoList.taskCount++;
@@ -189,37 +194,34 @@ let todoList = {
         // return the DOM to the initial condition
         // creating the add task again with the event listener
         todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt()
-        new AddEvent(todoList.btnAddTask,todoList.initTask).addEvent();
+        new AddEvent(todoList.btnAddTask,todoList.initTask,'click').addEvent();
     },
     deleteTask : function(e){
         //console.log(e);
         //console.log(e.srcElement.id); // value of the id attribute of the button
-        btntoDeleteId = e.srcElement.id;
-        while(document.getElementById(btntoDeleteId)){
-            document.getElementById(btntoDeleteId).remove();
+        todoList.btntoDeleteId = e.srcElement.id;
+        while(document.getElementById(todoList.btntoDeleteId)){
+            document.getElementById(todoList.btntoDeleteId).remove();
         }
     },
     addDate : function(e){
+        // this line below takes the event target which is the input date that we clicked on (the calendar when we choose a date), then go to the parent Node with is .main-content and grab all its children element to put them into an array using the Array.from() method. Finally we use that array to get the index of the element we clicked on wich is the the calendar date. we console.log that index
+        todoList.inputDatetoDeleteId =e.srcElement.id;
         console.log(Array.from(e.target.parentNode.children).indexOf(e.target));
-        todoList.taskDay = Array.from(e.target.parentNode.children).indexOf(e.target);
-        console.log(e.srcElement.value.split('-'));
-        console.log(format(new Date(e.srcElement.value.split('-')[0], e.srcElement.value.split('-')[1], e.srcElement.value.split('-')[2]),  'PPPP'));
-        todoList.taskYear = format(new Date(e.srcElement.value.split('-')[0], e.srcElement.value.split('-')[1], e.srcElement.value.split('-')[2]),  'PPPP');
+        // the inputDateIndex will store the index value
+        todoList.inputDateIndex = Array.from(e.target.parentNode.children).indexOf(e.target);
+        // the line below get to the input date value, which means the date we selected on the calendar, the format is 'xxxx-xx-xx' therefore we use the split() method to get an array that will be used on the format date
+        todoList.inputDateArray = e.srcElement.value.split('-');
+        // storing the format() method result from the 'date-fns' library
+        todoList.inputDateValue = format(new Date(todoList.inputDateArray[0], todoList.inputDateArray[1],todoList.inputDateArray[2]),  'PPPP');
         //new DeleteElmt('#todoList.taskCount');
-        new DeleteElmt('.task-date');
-        todoList.taskMonth = document.createElement('p');
-        todoList.taskMonth.innerText = todoList.taskYear;
-        todoList.mainDiv.insertBefore(todoList.taskMonth, todoList.mainDiv.children[todoList.taskDay]);
-    /*   alert(`You will now enter the your task's due date`);
-        todoList.taskYear  = prompt('enter the year!');
-        todoList.taskMonth = prompt('enter the month!');
-        todoList.taskDay   = prompt('enter the day!');
-        if(todoList.taskYear != null && todoList.taskYear != ''
-        && todoList.taskMonth != null && todoList.taskMonth != ''
-        && todoList.taskDay != null && todoList.taskDay != '' ){
-            document.querySelector('.task-date').innerText = format(new Date(todoList.taskYear+'-'+todoList.taskMonth+'-'+todoList.taskDay), 'MM/dd/yyyy');
-        }*/
+        //document.getElementById(todoList.inputDatetoDeleteId).remove();
+        document.querySelector(`.task-date${todoList.inputDatetoDeleteId}`).remove();
+        todoList.taskDateNewEl = document.createElement('p');
+        todoList.taskDateNewEl.innerText = todoList.inputDateValue;
+        todoList.mainDiv.insertBefore(todoList.taskDateNewEl, todoList.mainDiv.children[todoList.inputDateIndex]);
+        todoList.taskDateNewEl.setAttribute('id',todoList.inputDatetoDeleteId);
     },
 }
 // properties that call the constructor to create event listeners
-todoList.btnAddProjectEvent = new AddEvent(todoList.btnAddProject,todoList.initProject).addEvent()
+todoList.btnAddProjectEvent = new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
