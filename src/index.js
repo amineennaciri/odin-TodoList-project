@@ -64,6 +64,7 @@ let todoList = {
     btnConfProject : undefined,
     btnCancelProject : undefined,
     projectTitle : undefined,
+    taskmainTitle: undefined,
     btnAddTask : undefined,
     taskInput : undefined,
     btnConfTask : undefined,
@@ -71,6 +72,7 @@ let todoList = {
     taskComplete: undefined,
     projectDisplay: undefined,
     projectDelete: undefined,
+    mainContentChilds: undefined,
     taskDelete : undefined,
     taskDisplay : undefined,
     taskDate : undefined,
@@ -116,7 +118,7 @@ let todoList = {
             // deleting the project input, conf button, cancel button
             new DeleteElmt('.project-input','.confProjectBtn','.cancelProjectBtn')
             // create event listeners for delete project button
-            new AddEvent(todoList.projectDelete,todoList.deleteProject).addEvent();
+            new AddEvent(todoList.projectDelete,todoList.deleteProject,'click').addEvent();
         }
     },
     cancelProject : function(){
@@ -130,10 +132,17 @@ let todoList = {
     deleteProject : function(){
         // deleting h2 project, the btn Add Task, delete button and projectDsplay
         new DeleteElmt('.project-title','.btnAddTask','.project-delete','.project-display')
+        // I need to be able to delete the everything inside the right div
+        todoList.mainContentChilds = document.querySelector('.main-content').children;
+        while(todoList.mainContentChilds.length>0){
+            todoList.mainContentChilds[0].remove();
+        }
         // return the DOM to the initial condition
         // creating the add project again with the event listener
         todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
         new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
+        // create the h2: Tasks List again because it was deleted.
+        todoList.taskmainTitle = new CreateElmt(todoList.taskmainTitle,'h2','main-header',todoList.mainDiv,'Tasks List').createElmt();
     },
     initTask : function(){
         // creating the input field
@@ -214,12 +223,13 @@ let todoList = {
         todoList.inputDateArray = e.srcElement.value.split('-');
         // storing the format() method result from the 'date-fns' library
         todoList.inputDateValue = format(new Date(todoList.inputDateArray[0], todoList.inputDateArray[1],todoList.inputDateArray[2]),  'PPPP');
-        //new DeleteElmt('#todoList.taskCount');
-        //document.getElementById(todoList.inputDatetoDeleteId).remove();
+        // the following command delete the right task-date to replace it with the date format selected.
         document.querySelector(`.task-date${todoList.inputDatetoDeleteId}`).remove();
+        // creating an element that will have as a value the date value.
         todoList.taskDateNewEl = document.createElement('p');
         todoList.taskDateNewEl.innerText = todoList.inputDateValue;
         todoList.mainDiv.insertBefore(todoList.taskDateNewEl, todoList.mainDiv.children[todoList.inputDateIndex]);
+        // addind the same Id attribute as the deleted input date calendar, so that we can delete the whole task if we want with the delete btn
         todoList.taskDateNewEl.setAttribute('id',todoList.inputDatetoDeleteId);
     },
 }
