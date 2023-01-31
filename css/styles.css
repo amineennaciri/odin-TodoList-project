@@ -68,3 +68,33 @@ body {
 .task-complete {
     grid-column: 1/2;
 }
+
+/*split the display for the left side div*/
+.left-side {
+    display: grid;
+    grid-template-columns: 60% 20% 20%;
+    grid-template-rows: repeat(auto-fit, 40px);
+}
+ .left-side > h2 {
+    margin: 0px;
+}
+
+.left-side>h2, .btnAddProject {
+    grid-column: 1/4;
+}
+
+.project-input {
+    grid-column: 1/2;
+}
+
+.confProjectBtn {
+    grid-column: 2/3;
+}
+
+.confCancelBtn, .project-delete {
+    grid-column: 3/4;
+}
+
+.project-display {
+    grid-column: 1/3;
+}

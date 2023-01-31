@@ -120,6 +120,10 @@ let todoList = {
             // create event listeners for delete project button
             new AddEvent(todoList.projectDelete,todoList.deleteProject,'click').addEvent();
         }
+        // create a new add Project btn
+        todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt();
+        // add an event listener to the new add Project btn
+        todoList.btnAddProjectEvent = new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
     },
     cancelProject : function(){
         // deleting the project input, conf button, cancel button
