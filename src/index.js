@@ -72,6 +72,7 @@ let todoList = {
     taskComplete: undefined,
     projectDisplay: undefined,
     projectDelete: undefined,
+    projectCount : 0,
     mainContentChilds: undefined,
     taskDelete : undefined,
     taskDisplay : undefined,
@@ -94,6 +95,8 @@ let todoList = {
         new DeleteElmt('.btnAddProject');
         // create the confirm button and link it to the left div
         todoList.btnConfProject = new CreateElmt(todoList.btnConfProject,'button','confProjectBtn',todoList.leftDiv,'Confirm').createElmt()
+        // add an Id attribute to the confirm button
+        todoList.btnConfProject.setAttribute('id',todoList.projectCount);
         // create the cancel button and link it to the left div
         todoList.btnCancelProject = new CreateElmt(todoList.btnCancelProject,'button','cancelProjectBtn',todoList.leftDiv,'Cancel').createElmt()
         // create event listeners for confirm and cancel buttons
@@ -101,42 +104,67 @@ let todoList = {
         new AddEvent(todoList.btnCancelProject,todoList.cancelProject,'click').addEvent();
     },
     // the add button event listener function
-    confirmProject : function(){
+    confirmProject : function(e){
         // this condition enable us to stop adding the same project 
         // to the DOM multiple times
-        if(!document.querySelector('.project-title')){
+        if(document.querySelector('.project-title') && e.srcElement.id!=document.querySelector('.project-title').id){
+            console.log(e.srcElement.id);
+            console.log('I ran the condition');  
+            todoList.hideTasks(e);
+        }
+       // if(!document.querySelector('.project-title')){
             // create the projectTitle Header and link it to the main div
             todoList.projectTitle = new CreateElmt(todoList.projectTitle,'h2','project-title',todoList.mainDiv,document.querySelector('.project-input').value).createElmt();
+            // add an Id attribute to the project Title h2
+            todoList.projectTitle.setAttribute('id',todoList.projectCount);
             // create the add button for the task
             todoList.btnAddTask = new CreateElmt(todoList.btnAddTask,'button','btnAddTask',todoList.mainDiv,'Add Task').createElmt();
             // create event listeners for add task button
             new AddEvent(todoList.btnAddTask,todoList.initTask,'click').addEvent();
             // create the button that will display the name of the project
             todoList.projectDisplay = new CreateElmt(todoList.projectDisplay,'button','project-display',todoList.leftDiv,document.querySelector('.project-input').value).createElmt();
+             // add an Id attribute to the project display
+             todoList.projectDisplay.setAttribute('id',todoList.projectCount);
             //*********** */ this line below is a test
-            new AddEvent(todoList.projectDisplay,todoList.hideTasks,'click').addEvent();
+            new AddEvent(todoList.projectDisplay,todoList.togglehideTasks,'click').addEvent();
 
             //********** */ the lines above are a test
             // create the delete button that will delete the current project if pressed
             todoList.projectDelete = new CreateElmt(todoList.projectDelete,'button','project-delete',todoList.leftDiv,'delete').createElmt();
+            // add an Id attribute to the project delete button
+            todoList.projectDelete.setAttribute('id',todoList.projectCount);
             // deleting the project input, conf button, cancel button
             new DeleteElmt('.project-input','.confProjectBtn','.cancelProjectBtn')
             // create event listeners for delete project button
             new AddEvent(todoList.projectDelete,todoList.deleteProject,'click').addEvent();
-        }
+        //}
         // create a new add Project btn
         todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt();
         // add an event listener to the new add Project btn
         todoList.btnAddProjectEvent = new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
+        // the following line puts a condition where if a project was already created the following command will be applied
+        todoList.projectCount++;
     },
-    hideTasks : function(){
-        /* document.querySelector().children; */
+    hideTasks : function(e){
+        console.log(e.srcElement.id)//ID
         let varA = document.querySelector('.main-content').children.length;
         let varB = [];
         varB = document.querySelector('.main-content').children;
+/*         console.log(varB);
+        console.log(varA); */
+        if(varB[1].style.display != "none"){
+            for (let i=1;i<=varA-1;i++){
+                varB[i].style.display = "none";
+            }
+        }
+    },
+    togglehideTasks : function(){
+        /* console.log(e.srcElement.id); */
+        /* document.querySelector().children; */
+        let varA = document.querySelector('.main-content').children.length;
+        let varB = document.querySelector('.main-content').children;
         console.log(varB);
         console.log(varA);
-        let varI = 0;
         if(varB[1].style.display != "none"){
             for (let i=1;i<=varA-1;i++){
                 varB[i].style.display = "none";
@@ -146,12 +174,6 @@ let todoList = {
                 varB[i].style.display = "block";
             }  
         }
-
-/*         while(varB[varI].style.display!= "none" && varI<=varA-1){
-            varB[varI].style.display = "none";
-            varI++;
-        } */
-/*         varB[0].style.display = "none"; */
     },
     cancelProject : function(){
         // deleting the project input, conf button, cancel button
@@ -171,8 +193,8 @@ let todoList = {
         }
         // return the DOM to the initial condition
         // creating the add project again with the event listener
-        todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
-        new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
+/*         todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt()
+        new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent(); */
         // create the h2: Tasks List again because it was deleted.
         todoList.taskmainTitle = new CreateElmt(todoList.taskmainTitle,'h2','main-header',todoList.mainDiv,'Tasks List').createElmt();
     },
@@ -246,7 +268,7 @@ let todoList = {
         }
     },
     addDate : function(e){
-        // this line below takes the event target which is the input date that we clicked on (the calendar when we choose a date), then go to the parent Node with is .main-content and grab all its children element to put them into an array using the Array.from() method. Finally we use that array to get the index of the element we clicked on wich is the the calendar date. we console.log that index
+        // this line below takes the event target which is the input date that we clicked on (the calendar when we choose a date), then go to the parent Node wich is .main-content and grab all its children element to put them into an array using the Array.from() method. Finally we use that array to get the index of the element we clicked on wich is the the calendar date. we console.log that index
         todoList.inputDatetoDeleteId =e.srcElement.id;
         console.log(Array.from(e.target.parentNode.children).indexOf(e.target));
         // the inputDateIndex will store the index value
