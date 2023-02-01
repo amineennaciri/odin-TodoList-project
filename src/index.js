@@ -113,6 +113,10 @@ let todoList = {
             new AddEvent(todoList.btnAddTask,todoList.initTask,'click').addEvent();
             // create the button that will display the name of the project
             todoList.projectDisplay = new CreateElmt(todoList.projectDisplay,'button','project-display',todoList.leftDiv,document.querySelector('.project-input').value).createElmt();
+            //*********** */ this line below is a test
+            new AddEvent(todoList.projectDisplay,todoList.hideTasks,'click').addEvent();
+
+            //********** */ the lines above are a test
             // create the delete button that will delete the current project if pressed
             todoList.projectDelete = new CreateElmt(todoList.projectDelete,'button','project-delete',todoList.leftDiv,'delete').createElmt();
             // deleting the project input, conf button, cancel button
@@ -124,6 +128,30 @@ let todoList = {
         todoList.btnAddProject = new CreateElmt(todoList.btnAddProject,'button','btnAddProject',todoList.leftDiv,'Add Project').createElmt();
         // add an event listener to the new add Project btn
         todoList.btnAddProjectEvent = new AddEvent(todoList.btnAddProject,todoList.initProject,'click').addEvent();
+    },
+    hideTasks : function(){
+        /* document.querySelector().children; */
+        let varA = document.querySelector('.main-content').children.length;
+        let varB = [];
+        varB = document.querySelector('.main-content').children;
+        console.log(varB);
+        console.log(varA);
+        let varI = 0;
+        if(varB[1].style.display != "none"){
+            for (let i=1;i<=varA-1;i++){
+                varB[i].style.display = "none";
+            } 
+        }else{
+            for (let i=1;i<=varA-1;i++){
+                varB[i].style.display = "block";
+            }  
+        }
+
+/*         while(varB[varI].style.display!= "none" && varI<=varA-1){
+            varB[varI].style.display = "none";
+            varI++;
+        } */
+/*         varB[0].style.display = "none"; */
     },
     cancelProject : function(){
         // deleting the project input, conf button, cancel button
